@@ -4,7 +4,6 @@ LICENSE file in the root directory of this source tree.
 *******************************************************************************/
 
 #include "TacosGreedy.h"
-#include "AlgorithmStatMonitor.h"
 #include "Log.h"
 #include <cassert>
 #include <iostream>
@@ -14,11 +13,9 @@ using namespace Tacos;
 
 TacosGreedy::TacosGreedy(const std::shared_ptr<Topology> topology,
                          const std::shared_ptr<Collective> collective,
-                         std::shared_ptr<AlgorithmStatMonitor> algorithmStatMonitor,
                          std::shared_ptr<LinkUsageTracker> linkUsageTracker) noexcept
     : topology(topology),
       collective(collective),
-      algorithmStatMonitor(algorithmStatMonitor),
       linkUsageTracker(linkUsageTracker) {
     // set values
     npusCount = topology->getNpusCount();
@@ -213,9 +210,6 @@ bool TacosGreedy::prepareBacktracking(std::shared_ptr<RequestSet> requests,
             // TODO: implement path encoding
             arrivalsCount++;
             (*contains)[chunk][dest] = true;  // chunk arrived at dest
-
-            // increment processed chunk size
-            algorithmStatMonitor->incrementProcessedChunkSize(link, chunkSize);
 
             // reset chunk and link time
             network->setProcessingChunk(link, -1);

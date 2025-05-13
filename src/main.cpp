@@ -3,7 +3,6 @@ This source code is licensed under the MIT license found in the
 LICENSE file in the root directory of this source tree.
 *******************************************************************************/
 
-#include "AlgorithmStatMonitor.h"
 #include "AllGather.h"
 #include "Hypercube3D.h"
 #include "LinkUsageTracker.h"
@@ -65,7 +64,6 @@ int main() {
     std::cout << "Chunks count: " << chunksCount << std::endl;
 
     // create collective algorithm stat monitor
-    auto algorithmStatMonitor = std::make_shared<AlgorithmStatMonitor>(topology);
     auto linkUsageTracker = std::make_shared<LinkUsageTracker>();
 
     // create timer
@@ -73,7 +71,7 @@ int main() {
 
     // create solver and solve
     solverTimer.start();
-    auto solver = TacosGreedy(topology, collective, algorithmStatMonitor, linkUsageTracker);
+    auto solver = TacosGreedy(topology, collective, linkUsageTracker);
     auto collectiveTime = solver.solve();
     solverTimer.stop();
 
