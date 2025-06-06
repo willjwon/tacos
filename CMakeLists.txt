@@ -7,32 +7,38 @@
 ## ******************************************************************************
 
 # Check CMake version
-cmake_minimum_required(VERSION 3.25)
+cmake_minimum_required(VERSION 3.26)
 
 # Create Project
-project(TACOS)
+project(TACOS LANGUAGES CXX)
 
-# Setup compilation options
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
+# Append cMake module path
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 
 # Set build type
-set(CMAKE_BUILD_TYPE Release)
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE Release CACHE STRING "Build type" FORCE)
+endif()
 
-# Debug option
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DDEBUG")
+# Set C++ standard
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+set(CMAKE_COMPILE_WARNING_AS_ERROR ON)
 
-# Project include option
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include/tacos)
+# Set Output directories
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 
-# Target (common) compilation files
-file(GLOB srcs
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp
-)
+# Compile src files
+add_subdirectory(src)
 
-add_executable(TACOS ${srcs})
-target_sources(TACOS PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp)
-set_target_properties(TACOS PROPERTIES
-        RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/bin
-        LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/lib
-        ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/lib)
+# Enable testing
+include(CTest)
+enable_testing()
+
+if(BUILD_TESTING)
+    include(FetchGoogleTest)
+    add_subdirectory(tests)
+endif()
