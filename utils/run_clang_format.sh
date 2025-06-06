@@ -1,26 +1,33 @@
-#!/bin/bash
+#!/bin/sh
 set -e
 
 ## ******************************************************************************
 ## This source code is licensed under the MIT license found in the
 ## LICENSE file in the root directory of this source tree.
+##
+## Copyright (c) 2022-2025 Intel Corporation
+## Copyright (c) 2022-2025 Georgia Institute of Technology
 ## ******************************************************************************
 
 # find the absolute path to this script
 SCRIPT_DIR=$(dirname "$(realpath "$0")")
-TARGET_DIR="$SCRIPT_DIR/.."
+PROJECT_DIR="${SCRIPT_DIR:?}/.."
 
-# folders to run clang-format
-folders=("collective" "helper" "include" "runner" "synthesizer" "topology")
+# function to format a given directory
+function run_clang_format {
+  find "${PROJECT_DIR:?}/$1" \( -name "*.cpp" -o -name "*.h" \) \
+    -exec clang-format -style=file -i {} \;
+}
 
 # start:
-echo "Formatting TACOS Codebase:"
+echo "[TACOS] Formatting codebase using clang-format."
 
-for folder in "${folders[@]}"; do
-    printf "\tFormatting $folder:\n"
-    find "$TARGET_DIR/$folder" \( -name "*.cpp" -o -name "*.h" \) -exec \
-        clang-format -style=file -i {} \;
+# format directories
+targets=("src" "include")
+for dir in ${targets[@]}; do
+  printf "\tFormatting ${dir} directory...\n"
+  run_clang_format "${dir}"
 done
 
-# run clang-format for `co# # finalize
-echo "Formatting Done."
+# finalize
+echo "[TACOS] Formatting Done."

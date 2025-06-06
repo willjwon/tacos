@@ -15,8 +15,7 @@ LICENSE file in the root directory of this source tree.
 namespace Tacos {
 class TacosGreedy {
   public:
-    TacosGreedy(std::shared_ptr<Topology> topology,
-                std::shared_ptr<Collective> collective) noexcept;
+    TacosGreedy(std::shared_ptr<Topology> topology, std::shared_ptr<Collective> collective) noexcept;
 
     [[nodiscard]] Time solve() noexcept;
 
