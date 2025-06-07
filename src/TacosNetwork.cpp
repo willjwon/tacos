@@ -26,7 +26,7 @@ TacosNetwork::TacosNetwork(const std::shared_ptr<Topology> topology, const Chunk
 }
 
 std::vector<NpuId> TacosNetwork::incomingNpus(const NpuId dest, const bool shuffle) noexcept {
-    assert(0 <= dest < npusCount);
+    assert(0 <= dest && dest < npusCount);
 
     auto incomingNpus = std::vector<NpuId>();
 
@@ -45,7 +45,7 @@ std::vector<NpuId> TacosNetwork::incomingNpus(const NpuId dest, const bool shuff
 }
 
 std::vector<NpuId> TacosNetwork::outgoingNpus(const NpuId src, const bool shuffle) noexcept {
-    assert(0 <= src < npusCount);
+    assert(0 <= src && src < npusCount);
 
     auto outgoingNpus = std::vector<NpuId>();
 

@@ -23,7 +23,7 @@ function run_clang_format {
 echo "[TACOS] Formatting codebase using clang-format."
 
 # format directories
-targets=("src" "include")
+targets=("src" "include" "tests")
 for dir in ${targets[@]}; do
   printf "\tFormatting ${dir} directory...\n"
   run_clang_format "${dir}"
