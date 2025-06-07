@@ -7,7 +7,11 @@
 ## ******************************************************************************
 
 # TACOS tests
-add_executable(tacos_tests test_tacos.cpp)
+add_executable(tacos_tests
+    test_tacos_mesh_2d.cpp
+    test_tacos_hypercube_3d.cpp
+    test_tacos_torus_3d.cpp
+)
 target_link_libraries(tacos_tests PRIVATE tacos)
 
 # Include googletest
