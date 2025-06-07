@@ -102,7 +102,8 @@ Time TacosGreedy::solve() noexcept {
             network->removeLink(selectedLink);
         }
 
-        DebugLog(std::cout << "Scheduled: " << successfulMatchingCount << " / " << totalChunksCount << std::endl);
+        DebugLog(std::cout << "Scheduled: " << successfulMatchingCount << " / " << totalChunksCount
+                           << std::endl);
         DebugLog(std::cout << std::endl);
         // reset topology and continue
         network->reset();
@@ -176,7 +177,8 @@ bool TacosGreedy::prepareBacktracking(std::shared_ptr<RequestSet> requests,
                 auto replaceCandidate = std::vector<ChunkId>();
 
                 // iterate over all requests to find a chunk rc
-                // where request[rc][dest] = true, contains[rc][src] = true, contains[rc][dest] = false
+                // where request[rc][dest] = true, contains[rc][src] = true, contains[rc][dest] =
+                // false
                 for (const auto [rc, rd] : *requests) {
                     if (rd == dest && (*contains)[rc][src] && !(*contains)[rc][dest]) {
                         // rc has arrived at src but not at dest
@@ -195,7 +197,8 @@ bool TacosGreedy::prepareBacktracking(std::shared_ptr<RequestSet> requests,
 
                 // random choice one candidate
                 auto distribution = std::uniform_int_distribution<>(0,
-                                                                    replaceCandidate.size() - 1);  // define the range
+                                                                    replaceCandidate.size() -
+                                                                        1);  // define the range
                 const auto index = distribution(randomEngine);
                 chunk = replaceCandidate[index];
                 replacedCount++;
@@ -223,10 +226,12 @@ bool TacosGreedy::prepareBacktracking(std::shared_ptr<RequestSet> requests,
     DebugLog(std::cout << "\tDiscarded: " << discardedCount << std::endl);
 
     // return true if any arrival or replacement happens
-    return (arrivalsCount > 0) || (replacedCount > 0);  // true if any arrival or replacement happens
+    return (arrivalsCount > 0) ||
+           (replacedCount > 0);  // true if any arrival or replacement happens
 }
 
-std::pair<LinkId, Time> TacosGreedy::selectBestLink(const CandidateLinkSet& candidateLinks) noexcept {
+std::pair<LinkId, Time> TacosGreedy::selectBestLink(
+    const CandidateLinkSet& candidateLinks) noexcept {
     auto minLinkTime = std::numeric_limits<double>::max();
     LinkId selectedLink;
 

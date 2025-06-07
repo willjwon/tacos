@@ -33,19 +33,22 @@ int main() {
     const auto linkAlphaBeta = std::make_pair(0.5, bw_beta);
 
     //    const auto topology = std::make_shared<Mesh2D>(x, y, linkAlphaBeta);
-    //    const auto filename = "../../Mesh2D_" + std::to_string(x) + "_" + std::to_string(y) + ".csv";
+    //    const auto filename = "../../Mesh2D_" + std::to_string(x) + "_" + std::to_string(y) +
+    //    ".csv";
 
     //    const auto topology = std::make_shared<Torus2D>(x, y, linkAlphaBeta);
-    //    const auto filename = "../../Torus2D_" + std::to_string(x) + "_" + std::to_string(y) + ".csv";
+    //    const auto filename = "../../Torus2D_" + std::to_string(x) + "_" + std::to_string(y) +
+    //    ".csv";
 
     const auto topology = std::make_shared<Hypercube3D>(x, y, z, linkAlphaBeta);
-    const auto filename =
-        "../../Hypercube3D_" + std::to_string(x) + "_" + std::to_string(y) + "_" + std::to_string(z) + ".csv";
+    const auto filename = "../../Hypercube3D_" + std::to_string(x) + "_" + std::to_string(y) + "_" +
+                          std::to_string(z) + ".csv";
 
     //    const auto topology = std::make_shared<Torus3D>(x, y, z, linkAlphaBeta);
-    //    const auto filename = "../../Torus3D_" + std::to_string(x) + "_" + std::to_string(y) + "_" + std::to_string(z)
-    //    + ".csv"; const auto filename = "../../Torus3D_" + std::to_string(x) + "_" + std::to_string(y) + "_" +
-    //    std::to_string(z) + ".csv";
+    //    const auto filename = "../../Torus3D_" + std::to_string(x) + "_" + std::to_string(y) + "_"
+    //    + std::to_string(z)
+    //    + ".csv"; const auto filename = "../../Torus3D_" + std::to_string(x) + "_" +
+    //    std::to_string(y) + "_" + std::to_string(z) + ".csv";
 
     const auto npusCount = topology->getNpusCount();
     std::cout << "NPUs count: " << npusCount << std::endl;

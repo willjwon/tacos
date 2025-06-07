@@ -8,7 +8,9 @@ LICENSE file in the root directory of this source tree.
 
 using namespace Tacos;
 
-AllGather::AllGather(const int npusCount, const ChunkSize chunkSize, const int collectivesCount) noexcept
+AllGather::AllGather(const int npusCount,
+                     const ChunkSize chunkSize,
+                     const int collectivesCount) noexcept
     : Collective(chunkSize) {
     assert(npusCount > 0);
     assert(chunkSize > 0);

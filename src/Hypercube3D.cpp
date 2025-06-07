@@ -8,7 +8,8 @@ LICENSE file in the root directory of this source tree.
 
 using namespace Tacos;
 
-Hypercube3D::Hypercube3D(int size_x, int size_y, int size_z, LinkAlphaBeta linkAlphaBeta) noexcept : Topology() {
+Hypercube3D::Hypercube3D(int size_x, int size_y, int size_z, LinkAlphaBeta linkAlphaBeta) noexcept
+    : Topology() {
     assert(size_x > 0);
     assert(size_y > 0);
     assert(size_z > 0);

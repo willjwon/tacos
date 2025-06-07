@@ -8,7 +8,8 @@ LICENSE file in the root directory of this source tree.
 
 using namespace Tacos;
 
-Mesh2D::Mesh2D(const int width, const int height, const LinkAlphaBeta linkAlphaBeta) noexcept : Topology() {
+Mesh2D::Mesh2D(const int width, const int height, const LinkAlphaBeta linkAlphaBeta) noexcept
+    : Topology() {
     assert(width > 0);
     assert(height > 0);
     assert(linkAlphaBeta.first >= 0);

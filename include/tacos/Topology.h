@@ -32,7 +32,10 @@ class Topology {
 
     void setNpusCount(int newNpusCount) noexcept;
 
-    void connect(NpuId src, NpuId dest, LinkAlphaBeta linkAlphaBeta, bool bidirectional = false) noexcept;
+    void connect(NpuId src,
+                 NpuId dest,
+                 LinkAlphaBeta linkAlphaBeta,
+                 bool bidirectional = false) noexcept;
 
   private:
     std::vector<std::vector<bool>> topology;
