@@ -7,25 +7,28 @@ Copyright (c) 2022-2025 Georgia Institute of Technology
 *******************************************************************************/
 
 #include <AllGather.h>
+#include <Mesh2D_hetero.h>
 #include <TacosGreedy.h>
-#include <Torus3D.h>
 #include <gtest/gtest.h>
 #include <test_utils.h>
 
 using namespace Tacos;
 
-TEST(Torus3DTest, Torus3x3x3) {
-    const auto x = 3;
-    const auto y = 3;
-    const auto z = 3;
+TEST(Mesh2DHeteroTest, Mesh2DHetero5x5) {
+    const auto width = 5;
+    const auto height = 5;
     const auto alpha = 0.5;
-    const auto bandwidth = 50.0;
-    const auto beta = 1'000'000 / (bandwidth * 1024.0);
-    const auto linkAlphaBeta = std::make_pair(alpha, beta);
+    const auto bandwidth1 = 50.0;
+    const auto bandwidth2 = 75.0;
+    const auto beta1 = 1'000'000 / (bandwidth1 * 1024.0);
+    const auto beta2 = 1'000'000 / (bandwidth2 * 1024.0);
+    const auto linkAlphaBeta1 = std::make_pair(alpha, beta1);
+    const auto linkAlphaBeta2 = std::make_pair(alpha, beta2);
 
-    const auto topology = std::make_shared<Torus3D>(x, y, z, linkAlphaBeta);
+    const auto topology =
+        std::make_shared<Mesh2DHetero>(width, height, linkAlphaBeta1, linkAlphaBeta2);
     const auto npusCount = topology->getNpusCount();
-    ASSERT_EQ(npusCount, x * y * z);
+    ASSERT_EQ(npusCount, width * height);
 
     const auto collectivesCount = 1;
     const auto chunkSize = 1024.0 / (npusCount * collectivesCount);
@@ -40,26 +43,29 @@ TEST(Torus3DTest, Torus3x3x3) {
         samples.push_back(collectiveTime);
     }
 
-    const auto expected = 3706.20;
+    const auto expected = 8005.0;
     const auto counts = count_within_tolerance(samples, expected, 0.05);
     ASSERT_GE(counts, 7);
 }
 
-TEST(Torus3DTest, Torus3x4x5) {
-    const auto x = 3;
-    const auto y = 4;
-    const auto z = 5;
-    const auto alpha = 0.5;
-    const auto bandwidth = 50.0;
-    const auto beta = 1'000'000 / (bandwidth * 1024.0);
-    const auto linkAlphaBeta = std::make_pair(alpha, beta);
+TEST(Mesh2DHeteroTest, Mesh2DHetero8x5) {
+    const auto width = 8;
+    const auto height = 5;
+    const auto alpha = 1;
+    const auto bandwidth1 = 80.0;
+    const auto bandwidth2 = 35.0;
+    const auto beta1 = 1'000'000 / (bandwidth1 * 1024.0);
+    const auto beta2 = 1'000'000 / (bandwidth2 * 1024.0);
+    const auto linkAlphaBeta1 = std::make_pair(alpha, beta1);
+    const auto linkAlphaBeta2 = std::make_pair(alpha, beta2);
 
-    const auto topology = std::make_shared<Torus3D>(x, y, z, linkAlphaBeta);
+    const auto topology =
+        std::make_shared<Mesh2DHetero>(width, height, linkAlphaBeta1, linkAlphaBeta2);
     const auto npusCount = topology->getNpusCount();
-    ASSERT_EQ(npusCount, x * y * z);
+    ASSERT_EQ(npusCount, width * height);
 
     const auto collectivesCount = 2;
-    const auto chunkSize = 2048.0 / (npusCount * collectivesCount);
+    const auto chunkSize = 1024.0 / (npusCount * collectivesCount);
     const auto collective = std::make_shared<AllGather>(npusCount, chunkSize, collectivesCount);
     const auto chunksCount = collective->getChunksCount();
     ASSERT_EQ(chunksCount, npusCount * collectivesCount);
@@ -71,26 +77,29 @@ TEST(Torus3DTest, Torus3x4x5) {
         samples.push_back(collectiveTime);
     }
 
-    const auto expected = 7010.50;
+    const auto expected = 8595.43;
     const auto counts = count_within_tolerance(samples, expected, 0.05);
     ASSERT_GE(counts, 7);
 }
 
-TEST(Torus3DTest, Torus4x2x3) {
-    const auto x = 4;
-    const auto y = 2;
-    const auto z = 3;
-    const auto alpha = 0.5;
-    const auto bandwidth = 50.0;
-    const auto beta = 1'000'000 / (bandwidth * 1024.0);
-    const auto linkAlphaBeta = std::make_pair(alpha, beta);
+TEST(Mesh2DHeteroTest, Mesh2DHetero7x10) {
+    const auto width = 7;
+    const auto height = 10;
+    const auto alpha = 1.5;
+    const auto bandwidth1 = 16.0;
+    const auto bandwidth2 = 73.0;
+    const auto beta1 = 1'000'000 / (bandwidth1 * 1024.0);
+    const auto beta2 = 1'000'000 / (bandwidth2 * 1024.0);
+    const auto linkAlphaBeta1 = std::make_pair(alpha, beta1);
+    const auto linkAlphaBeta2 = std::make_pair(alpha, beta2);
 
-    const auto topology = std::make_shared<Torus3D>(x, y, z, linkAlphaBeta);
+    const auto topology =
+        std::make_shared<Mesh2DHetero>(width, height, linkAlphaBeta1, linkAlphaBeta2);
     const auto npusCount = topology->getNpusCount();
-    ASSERT_EQ(npusCount, x * y * z);
+    ASSERT_EQ(npusCount, width * height);
 
     const auto collectivesCount = 3;
-    const auto chunkSize = 3072.0 / (npusCount * collectivesCount);
+    const auto chunkSize = 4096.0 / (npusCount * collectivesCount);
     const auto collective = std::make_shared<AllGather>(npusCount, chunkSize, collectivesCount);
     const auto chunksCount = collective->getChunksCount();
     ASSERT_EQ(chunksCount, npusCount * collectivesCount);
@@ -102,7 +111,7 @@ TEST(Torus3DTest, Torus4x2x3) {
         samples.push_back(collectiveTime);
     }
 
-    const auto expected = 12507.50;
+    const auto expected = 44612.47;
     const auto counts = count_within_tolerance(samples, expected, 0.05);
     ASSERT_GE(counts, 7);
 }

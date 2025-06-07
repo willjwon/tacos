@@ -1,8 +1,17 @@
+/******************************************************************************
+This source code is licensed under the MIT license found in the
+LICENSE file in the root directory of this source tree.
+
+Copyright (c) 2022-2025 Intel Corporation
+Copyright (c) 2022-2025 Georgia Institute of Technology
+*******************************************************************************/
+
 #include <AllGather.h>
 #include <Mesh2D.h>
 #include <TacosGreedy.h>
 #include <gtest/gtest.h>
 #include <iostream>
+#include <test_utils.h>
 
 using namespace Tacos;
 
@@ -24,12 +33,16 @@ TEST(Mesh2DTest, Mesh5x5) {
     const auto chunksCount = collective->getChunksCount();
     ASSERT_EQ(chunksCount, npusCount * collectivesCount);
 
-    auto solver = TacosGreedy(topology, collective);
-    auto collectiveTime = solver.solve();
+    auto samples = std::vector<Tacos::Time>();
+    for (int i = 0; i < 10; ++i) {
+        auto solver = TacosGreedy(topology, collective);
+        auto collectiveTime = solver.solve();
+        samples.push_back(collectiveTime);
+    }
 
     const auto expected = 9606.0;
-    const auto tolerance = expected * 0.07;  // 5% tolerance
-    ASSERT_NEAR(collectiveTime, expected, tolerance);
+    const auto counts = count_within_tolerance(samples, expected, 0.05);
+    ASSERT_GE(counts, 7);
 }
 
 TEST(Mesh2DTest, Mesh10x10) {
@@ -50,12 +63,16 @@ TEST(Mesh2DTest, Mesh10x10) {
     const auto chunksCount = collective->getChunksCount();
     ASSERT_EQ(chunksCount, npusCount * collectivesCount);
 
-    auto solver = TacosGreedy(topology, collective);
-    auto collectiveTime = solver.solve();
+    auto samples = std::vector<Tacos::Time>();
+    for (int i = 0; i < 10; ++i) {
+        auto solver = TacosGreedy(topology, collective);
+        auto collectiveTime = solver.solve();
+        samples.push_back(collectiveTime);
+    }
 
     const auto expected = 5049.0;
-    const auto tolerance = expected * 0.07;  // 5% tolerance
-    ASSERT_NEAR(collectiveTime, expected, tolerance);
+    const auto counts = count_within_tolerance(samples, expected, 0.05);
+    ASSERT_GE(counts, 7);
 }
 
 TEST(Mesh2DTest, Mesh7x12) {
@@ -79,7 +96,14 @@ TEST(Mesh2DTest, Mesh7x12) {
     auto solver = TacosGreedy(topology, collective);
     auto collectiveTime = solver.solve();
 
+    auto samples = std::vector<Tacos::Time>();
+    for (int i = 0; i < 10; ++i) {
+        auto solver = TacosGreedy(topology, collective);
+        auto collectiveTime = solver.solve();
+        samples.push_back(collectiveTime);
+    }
+
     const auto expected = 19966.27;
-    const auto tolerance = expected * 0.07;  // 5% tolerance
-    ASSERT_NEAR(collectiveTime, expected, tolerance);
+    const auto counts = count_within_tolerance(samples, expected, 0.05);
+    ASSERT_GE(counts, 7);
 }

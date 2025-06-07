@@ -13,6 +13,7 @@ add_library(tacos
     EventQueue.cpp ${CMAKE_SOURCE_DIR}/include/tacos/EventQueue.h
     Hypercube3D.cpp ${CMAKE_SOURCE_DIR}/include/tacos/Hypercube3D.h
     Mesh2D.cpp ${CMAKE_SOURCE_DIR}/include/tacos/Mesh2D.h
+    Mesh2D_hetero.cpp ${CMAKE_SOURCE_DIR}/include/tacos/Mesh2D_hetero.h
     TacosGreedy.cpp ${CMAKE_SOURCE_DIR}/include/tacos/TacosGreedy.h
     TacosNetwork.cpp ${CMAKE_SOURCE_DIR}/include/tacos/TacosNetwork.h
     Timer.cpp ${CMAKE_SOURCE_DIR}/include/tacos/Timer.h
